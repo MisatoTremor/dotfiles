@@ -19,10 +19,10 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 sudo spctl --master-disable
 
 # Set computer name (as done via System Preferences → Sharing)
-sudo scutil --set ComputerName "Thor"
-sudo scutil --set HostName "Thor"
-sudo scutil --set LocalHostName "Thor"
-sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "Thor"
+sudo scutil --set ComputerName "AS-Trainer_01M"
+sudo scutil --set HostName "AS-Trainer_01M"
+sudo scutil --set LocalHostName "AS-Trainer_01M"
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "AS-Trainer_01M"
 
 # Menu bar: disable transparency
 defaults write NSGlobalDomain AppleEnableMenuBarTransparency -bool false
@@ -100,13 +100,13 @@ defaults write com.apple.BezelServices kDimTime -int 300
 # Set language and text formats
 # Note: if you’re in the US, replace `EUR` with `USD`, `Centimeters` with
 # `Inches`, and `true` with `false`.
-defaults write NSGlobalDomain AppleLanguages -array "en" "nl"
+defaults write NSGlobalDomain AppleLanguages -array "en" "de"
 defaults write NSGlobalDomain AppleLocale -string "en_GB@currency=EUR"
 defaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters"
 defaults write NSGlobalDomain AppleMetricUnits -bool true
 
 # Set the timezone; see `systemsetup -listtimezones` for other values
-systemsetup -settimezone "Europe/Brussels" > /dev/null
+systemsetup -settimezone "Europe/Berlin" > /dev/null
 
 # Disable auto-correct
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
@@ -300,6 +300,12 @@ hash tmutil &> /dev/null && sudo tmutil disablelocal
 # Allow installing user scripts via GitHub or Userscripts.org
 defaults write com.google.Chrome ExtensionInstallSources -array "https://*.github.com/*" "http://userscripts.org/*"
 defaults write com.google.Chrome.canary ExtensionInstallSources -array "https://*.github.com/*" "http://userscripts.org/*"
+
+###############################################################################
+# Spotlight                                                                   #
+###############################################################################
+
+defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array /Library/Caches /System/Library/Caches ~/Library/Application\ Support/Google ~/Library/Application\ Support/Google\ Earth ~/Library/Application\ Support/Spotify ~/Library/Application\ Support/Firefox ~/Library/Application\ Support/SyncServices ~/Library/Application\ Support/Steam ~/Library/Caches ~/Library/Cookies ~/Library/Google ~/Library/Preferences ~/Library/PubSub ~/Library/Safari ~/Library/Saved\ Application\ State ~/ownCloud ~/orb.db /usr/local/var
 
 ###############################################################################
 # Kill affected applications                                                  #

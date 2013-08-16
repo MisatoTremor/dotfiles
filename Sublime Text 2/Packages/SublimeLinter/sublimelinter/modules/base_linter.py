@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # base_linter.py - base class for linters
 
 import os
@@ -131,7 +130,7 @@ class BaseLinter(object):
             return (True, 'built in')
         elif isinstance(self.executable, basestring):
             self.executable = self.get_mapped_executable(view, self.executable)
-        elif isinstance(self.executable, bool) and self.executable == False:
+        elif isinstance(self.executable, bool) and self.executable is False:
             return (False, 'unknown error')
         else:
             return (False, 'bad type for CONFIG["executable"]')
@@ -156,10 +155,10 @@ class BaseLinter(object):
             settings = view.settings().get('SublimeLinter', {}).get(self.language, {})
 
             if settings:
-                args = settings.get('lint_args', [])
-                lintArgs.extend(args)
+                if 'lint_args' in settings:
+                    lintArgs = settings['lint_args']
 
-                cwd = settings.get('working_directory').encode('utf-8')
+                cwd = settings.get('working_directory', '').encode('utf-8')
 
                 if cwd and os.path.isabs(cwd) and os.path.isdir(cwd):
                     os.chdir(cwd)
@@ -203,7 +202,8 @@ class BaseLinter(object):
                                        stdout=subprocess.PIPE,
                                        stderr=subprocess.STDOUT,
                                        startupinfo=self.get_startupinfo())
-            result = process.communicate(code)[0]
+            process.stdin.write(code)
+            result = process.communicate()[0]
         finally:
             if tempfilePath:
                 os.remove(tempfilePath)
@@ -255,8 +255,7 @@ class BaseLinter(object):
                 return
 
         iters = re.finditer(regex, lineText)
-        results = [(result.start('underline'), result.end('underline')) for result in iters
-                    if not wordmatch or result.group('underline') == wordmatch]
+        results = [(result.start('underline'), result.end('underline')) for result in iters if not wordmatch or result.group('underline') == wordmatch]
 
         # Make the lineno one-based again for underline_range
         lineno += 1
@@ -299,7 +298,7 @@ class BaseLinter(object):
             lang = self.language.lower()
 
             if lang in map:
-		return map[lang].encode('utf-8')
+                return map[lang].encode('utf-8')
 
         return default
 
@@ -327,7 +326,7 @@ class BaseLinter(object):
     def find_file(self, filename, view):
         '''Find a file with the given name, starting in the view's directory,
            then ascending the file hierarchy up to root.'''
-        path = view.file_name().encode('utf-8')
+        path = (view.file_name() or '').encode('utf-8')
 
         # quit if the view is temporary
         if not path:
@@ -359,7 +358,7 @@ class BaseLinter(object):
         path = os.path.join(self.LIB_PATH, linter)
         options = self.get_javascript_options(view)
 
-        if options == None:
+        if options is None:
             options = json.dumps(view.settings().get('%s_options' % linter) or {})
 
         self.get_javascript_engine(view)
@@ -374,17 +373,17 @@ class BaseLinter(object):
 
     def get_javascript_options(self, view):
         '''Subclasses should override this if they want to provide options
-           for a Javascript-based linter. If the subclass cannot provide
+           for a JavaScript-based linter. If the subclass cannot provide
            options, it should return None (or not return anything).'''
         return None
 
     def get_javascript_engine(self, view):
-        if self.js_engine == None:
+        if self.js_engine is None:
             for engine in self.JAVASCRIPT_ENGINES:
                 if engine == 'node':
                     try:
                         path = self.get_mapped_executable(view, 'node')
-			subprocess.call([path, u'-v'], startupinfo=self.get_startupinfo())
+                        subprocess.call([path, u'-v'], startupinfo=self.get_startupinfo())
                         self.js_engine = {
                             'name': engine,
                             'path': path,
@@ -403,9 +402,9 @@ class BaseLinter(object):
                         }
                         break
 
-        if self.js_engine != None:
+        if self.js_engine is not None:
             return (True, self.js_engine['path'], 'using {0}'.format(self.JAVASCRIPT_ENGINE_NAMES[self.js_engine['name']]))
 
         # Didn't find an engine, tell the user
         engine_list = ', '.join(self.JAVASCRIPT_ENGINE_NAMES.values())
-        return (False, '', 'One of the following Javascript engines must be installed: ' + engine_list)
+        return (False, '', 'One of the following JavaScript engines must be installed: ' + engine_list)

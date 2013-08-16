@@ -20,6 +20,12 @@
 	"font_face": "Source Code Pro",
 	"highlight_modified_tabs": true,
 	"hot_exit": false,
+	"ignored_packages":
+	[
+		"Vintage",
+		"Theme - Aqua",
+		"Theme - Soda"
+	],
 	"remember_open_files": false,
 	"save_on_focus_lost": true,
 	"tab_size": 4,
