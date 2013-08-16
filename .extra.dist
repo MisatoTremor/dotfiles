@@ -8,6 +8,7 @@ do
     [[ -e $another_bin ]] && export PATH=$another_bin:$PATH
 done
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+export EDITOR="vim"
 
 # Git credentials
 GIT_AUTHOR_NAME="Steffen Roßkamp"

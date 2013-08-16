@@ -1,0 +1,12 @@
+{
+	"installed_packages":
+	[
+		"BracketHighlighter",
+		"Package Control",
+		"SublimeCodeIntel",
+		"SublimeLinter",
+		"Symfony2 Snippets",
+		"Theme - Aqua",
+		"Theme - Soda"
+	]
+}

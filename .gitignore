@@ -12,3 +12,7 @@ Thumbs.db
 # Files that might appear on external disks
 .Spotlight-V100
 .Trashes
+
+# Sublime cache
+Sublime Text 2/Packages/User/Package Control.cache
+Sublime Text 3/Packages/User/Package Control.cache
