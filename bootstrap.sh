@@ -1,7 +1,8 @@
-#!/bin/bash
-cd "$(dirname "$0")"
-git pull
+#!/usr/bin/env bash
+cd "$(dirname "${BASH_SOURCE}")"
+git pull origin master
 function doIt() {
+<<<<<<< HEAD
     rsync --exclude ".git/" --exclude ".DS_Store" --exclude "bootstrap.sh" --exclude "README.md" --exclude "init" --exclude "Sublime Text 2" -av . ~
     if [ -f ~/.extra ]; then
         echo "These changes have been made in the .extra.dist file, please handle these manually"
@@ -19,6 +20,11 @@ function doIt() {
             ln -sf `pwd`/Sublime\ Text\ 2/Pristine\ Packages ~/Library/Application\ Support/Sublime\ Text\ 2/Pristine\ Packages
         fi
     fi
+=======
+	rsync --exclude ".git/" --exclude ".DS_Store" --exclude "bootstrap.sh" \
+		--exclude "README.md" --exclude "LICENSE-MIT.txt" -av --no-perms . ~
+	source ~/.bash_profile
+>>>>>>> 06e649ab9accbae982d013805f370c0cffd424ff
 }
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
     doIt
@@ -30,4 +36,7 @@ else
     fi
 fi
 unset doIt
+<<<<<<< HEAD
 source ~/.bash_profile
+=======
+>>>>>>> 06e649ab9accbae982d013805f370c0cffd424ff

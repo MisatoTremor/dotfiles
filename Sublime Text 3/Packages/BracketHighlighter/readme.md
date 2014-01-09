@@ -26,6 +26,9 @@ This is a fork of pyparadigm's _SublimeBrackets_ and _SublimeTagmatcher_ (both a
 ## Overview
 Bracket Highlighter matches a variety of brackets such as: `[]`, `()`, `{}`, `""`, `''`, `<tag></tag>`, and even custom brackets.
 
+# Installation
+The recommended installation method is via Package Control.  Learn more here: https://sublime.wbond.net/.
+
 # FeatureList
 - Customizable to highlight almost any bracket
 - Customizable bracket highlight style
@@ -38,14 +41,6 @@ Bracket Highlighter matches a variety of brackets such as: `[]`, `()`, `{}`, `""
 - Configurable custom gutter icons
 - Toggle bracket escape mode for string brackets (regex|string)
 - Bracket plugins that can jump between bracket ends, select content, remove brackets and/or content, wrap selectios with brackets, swap brackets, swap quotes (handling quote escaping between the main quotes), fold/unfold conent between brackets, toggle through tag attribute selecection, select both the opening and closing tag name to change both simultaneously.
-
-# Installation
-To install BracketHighlighter for ST3, do not use Package controll at this time. [Download](https://github.com/facelessuser/BracketHighlighter/archive/BH2ST3.zip) or clone this repo into the SublimeText Packages directory and `git checkout BH2ST3`. Restart SublimeText to complete the install.
-
-```shell
-    cd Packages/
-    git clone -b BH2ST3 git://github.com/facelessuser/BracketHighlighter.git "BracketHighlighter"
-```
 
 # General Use
 In general BracketHighligher (BH) will automatically highlight brackets (or defined bracket like start and end blocks) its between.  By default, BH will but opening and closing icons in the gutter of the corresponding line containing open or closising bracket. BH, by default, will underline the closing and opening bracket as well.
@@ -287,9 +282,9 @@ There are two special style definitions whose names are reserved: `default` and 
         },
 ```
 
-- **icon**: icon to show in gutter. Available options are (angle|round|curly|square|tag|star|dot|bookmark|question|quote|double_quote|single_quote|single_quote_offset|double_quote_offset|none)
+- **icon**: icon to show in gutter. Available options are: angle, round, curly, square, tag, star, dot, bookmark, question, quote, double_quote, single_quote, single_quote_offset, double_quote_offset, none
 - **color**: scope to define color
-- **style**: higlight style.  Available options are (solid|outline|underline|thin_underline|squiggly|stippled|none)
+- **style**: higlight style.  Available options are: solid, outline, underline, thin_underline, squiggly, stippled, none
 
 As shown in the example above, if an option is omitted, it will use the setting in `default`.  So `curly`, in this example, defines `icon`, but will use `default` for the `color` and `style`.
 

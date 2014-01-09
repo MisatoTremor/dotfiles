@@ -6,6 +6,14 @@
     // this defines if the unmatched bracket should be shown.
     "show_unmatched" : true,
 
+    // Do the opposite of "show_unmatched" for the languages listed below
+    "show_unmatched_exceptions": [],
+
+    // Enable high visibility by default when sublime starts up
+    // If sublime is already running and this gets changed,
+    // you will not see any changes (restart requrired to see change)
+    "high_visibility_enabled_by_default": false,
+
     // High visibilty style and color for high visibility mode
     // (solid|outline|underline|thin_underline|squiggly|stippled)
     "high_visibility_style": "outline",
@@ -115,7 +123,7 @@
             "style": "regex",
             "scopes": ["string"],
             "language_filter": "whitelist",
-            "language_list": ["Ruby"],
+            "language_list": ["Ruby", "RSpec"],
             "sub_bracket_search": "true",
             "enabled": true
         },
@@ -235,7 +243,7 @@
             "style": "angle",
             "scope_exclude": ["string", "comment", "keyword.operator", "source.ruby.rails.embedded.html", "source.ruby.embedded.html"],
             "language_filter": "whitelist",
-            "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML (Rails)", "HTML (Jinja Templates)", "HTML (Twig)", "HTML+CFML", "ColdFusion", "ColdFusionCFC"],
+            "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML (Rails)", "HTML (Jinja Templates)", "HTML (Twig)", "HTML+CFML", "ColdFusion", "ColdFusionCFC", "laravel-blade"],
             "plugin_library": "bh_modules.tags",
             "enabled": true
         },
@@ -253,7 +261,7 @@
         // Ruby embedded HTML
         {
             "name": "ruby_embedded_html",
-            "open": "((?:(?<=<%)|(?<=^))\\s*\\b(?:if|case|until|unless|while|begin|class|module|def\\b[\\p{Ll}\\p{Lu}]*)|\\bdo)\\b",
+            "open": "((?:(?<=<%)|(?<=^)|(?<==))\\s*\\b(?:if|begin)\\b|(?:(?<=<%)|(?<=^))\\s*\\b(?:case|for|until|unless|while|class|module|def\\b[\\p{Ll}\\p{Lu}]*)|\\bdo)\\b",
             "close": "\\b(end)\\b",
             "style": "default",
             "scope_exclude": ["text.html", "source", "comment", "string"],
@@ -266,13 +274,13 @@
         // Ruby conditional statements
         {
             "name": "ruby",
-            "open": "(^\\s*\\b(?:if|case|until|unless|while|begin|class|module|def\\b[\\p{Ll}\\p{Lu}]*)|\\bdo)\\b",
+            "open": "((?:(?<=^)|(?<==))\\s*\\b(?:if|begin)\\b|^\\s*\\b(?:case|for|until|unless|while|class|module|def\\b[\\p{Ll}\\p{Lu}]*)|\\bdo)\\b",
             "close": "\\b(end)\\b",
             "style": "default",
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.rubykeywords",
             "language_filter": "whitelist",
-            "language_list": ["Ruby", "Ruby on Rails"],
+            "language_list": ["Ruby", "RSpec", "Ruby on Rails"],
             "enabled": true
         },
         // C/C++ compile switches
@@ -393,7 +401,7 @@
     // Determine which style of tag-matching to use in which syntax
     "tag_mode": {
         "xhtml": ["XML"],
-        "html": ["HTML", "HTML 5", "PHP", "HTML (Jinja Templates)", "HTML (Rails)", "HTML (Twig)"],
+        "html": ["HTML", "HTML 5", "PHP", "HTML (Jinja Templates)", "HTML (Rails)", "HTML (Twig)", "laravel-blade"],
         "cfml": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"]
     }
 }
