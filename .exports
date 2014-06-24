@@ -1,59 +1,25 @@
-<<<<<<< HEAD
-# Set the default editor
-if [ -f /usr/local/bin/subl ]; then
-    export EDITOR='subl -w'
-elif [ -f /usr/local/bin/mate ]; then
-    export EDITOR='mate'
-    export GIT_EDITOR='mate -wl1'
-else
-	export EDITOR="vim"
-fi
-# Don’t clear the screen after quitting a manual page
-export MANPAGER="less -X"
-# Highlight section titles in manual pages
-export LESS_TERMCAP_md="$ORANGE"
-
-export HISTCONTROL=ignoredups:erasedups  # no duplicate entries
-export HISTSIZE=100000                   # big big history
-export HISTFILESIZE=100000               # big big history
-shopt -s histappend                      # append to history, don't overwrite it
-
-# Save and reload the history after each command finishes
-export PROMPT_COMMAND="history -a; history -c; history -r; echo -ne \"\033]0;${USER}@${HOSTNAME}\007\"; $PROMPT_COMMAND"
-
-# Fix psycopg2 on 10.7.3
-export PGHOST=/tmp
-
-# no ._ files in archives please
-export COPYFILE_DISABLE=true
-
-export NODE_PATH=/usr/local/lib/node_modules:$NODE_PATH
-
-export TZ='Europe/Berlin'
-=======
 # Make vim the default editor
-export EDITOR="vim"
+export EDITOR="vim";
 
 # Larger bash history (allow 32³ entries; default is 500)
-export HISTSIZE=32768
-export HISTFILESIZE=$HISTSIZE
-export HISTCONTROL=ignoredups
+export HISTSIZE=32768;
+export HISTFILESIZE=$HISTSIZE;
+export HISTCONTROL=ignoredups;
 # Make some commands not show up in history
-export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
+export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help";
 
 # Prefer US English and use UTF-8
-export LANG="en_US"
-export LC_ALL="en_US.UTF-8"
+export LANG="en_US.UTF-8";
+export LC_ALL="en_US.UTF-8";
 
 # Highlight section titles in manual pages
-export LESS_TERMCAP_md="$ORANGE"
+export LESS_TERMCAP_md="${yellow}";
 
 # Don’t clear the screen after quitting a manual page
-export MANPAGER="less -X"
+export MANPAGER="less -X";
 
 # Always enable colored `grep` output
-export GREP_OPTIONS="--color=auto"
+export GREP_OPTIONS="--color=auto";
 
 # Link Homebrew casks in `/Applications` rather than `~/Applications`
-export HOMEBREW_CASK_OPTS="--appdir=/Applications"
->>>>>>> 06e649ab9accbae982d013805f370c0cffd424ff
+export HOMEBREW_CASK_OPTS="--appdir=/Applications";
