@@ -1,0 +1,10 @@
+{
+    // External diff tool path (absolute)
+    "external_diff": "/usr/bin/diff",
+
+    // SVN path
+    "svn": "/usr/bin/svn",
+
+    // Git Path
+    "git": "/usr/local/bin/git",
+}

@@ -1,6 +1,8 @@
 SublimeLinter
 =========
 
+[![Build Status](https://travis-ci.org/SublimeLinter/SublimeLinter3.svg?branch=master)](https://travis-ci.org/SublimeLinter/SublimeLinter3)
+
 **To those upgrading from SublimeLinter v1.7:**
 
 **LINTERS ARE *NOT* INCLUDED WITH SUBLIMELINTER 3.**

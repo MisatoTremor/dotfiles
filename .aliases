@@ -7,13 +7,9 @@ alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
 # Shortcuts
-<<<<<<< HEAD
-alias d="cd ~/Dropbox"
-=======
 alias d="cd ~/Documents/Dropbox"
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
->>>>>>> 06e649ab9accbae982d013805f370c0cffd424ff
 alias p="cd ~/Projects"
 alias g="git"
 alias h="history"
@@ -50,12 +46,6 @@ export LS_COLORS='no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40
 alias sudo='sudo '
 
 # Gzip-enabled `curl`
-<<<<<<< HEAD
-alias gurl="curl --compressed"
-
-# Get OS X Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
-alias update='sudo softwareupdate -i -a; brew update; brew upgrade; npm update npm -g; npm update -g; sudo gem update'
-=======
 alias gurl='curl --compressed'
 
 # Get week number
@@ -66,7 +56,6 @@ alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date
 
 # Get OS X Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
 alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm update npm -g; npm update -g; sudo gem update'
->>>>>>> 06e649ab9accbae982d013805f370c0cffd424ff
 
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
@@ -135,14 +124,11 @@ alias plistbuddy="/usr/libexec/PlistBuddy"
 # (useful when executing time-consuming commands)
 alias badge="tput bel"
 
-<<<<<<< HEAD
-=======
 # Intuitive map function
 # For example, to list all directories that contain a certain file:
 # find . -name .gitattributes | map dirname
 alias map="xargs -n1"
 
->>>>>>> 06e649ab9accbae982d013805f370c0cffd424ff
 # One of @janmoesen’s ProTip™s
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
     alias "$method"="lwp-request -m '$method'"
@@ -155,7 +141,6 @@ command -v grunt > /dev/null && alias grunt="grunt --stack"
 alias stfu="osascript -e 'set volume output muted true'"
 alias pumpitup="osascript -e 'set volume 7'"
 alias hax="growlnotify -a 'Activity Monitor' 'System error' -m 'WTF R U DOIN'"
-<<<<<<< HEAD
 
 # Open a manpage in Preview, which can be saved to PDF
 function pman {
@@ -173,5 +158,3 @@ alias varnishoff='iptables -t nat -D PREROUTING -i eth0 -p tcp -m tcp --dport 80
 alias varnishstatus='iptables -L -t nat |grep -q 6081; if [ "test$?" = "test0" ]; then echo "Varnish On"; else echo "Varnish Off"; fi'
 
 alias vim='mvim -v'
-=======
->>>>>>> 06e649ab9accbae982d013805f370c0cffd424ff

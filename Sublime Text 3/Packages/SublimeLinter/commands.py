@@ -67,10 +67,10 @@ class SublimelinterLintCommand(sublime_plugin.TextCommand):
         """
         Return True if the current view can be linted.
 
-        A view can be linted if:
+        If the view has *only* file-only linters, it can be linted
+        only if the view is not dirty.
 
-        - The view has only file-only linters and the view is not dirty.
-        - The lint mode is not "background".
+        Otherwise it can be linted.
 
         """
 
@@ -87,7 +87,7 @@ class SublimelinterLintCommand(sublime_plugin.TextCommand):
         if not has_non_file_only_linter:
             return not self.view.is_dirty()
 
-        return persist.settings.get('lint_mode', 'background') != 'background'
+        return True
 
     def run(self, edit):
         """Lint the current view."""
@@ -283,6 +283,7 @@ class SublimelinterToggleSettingCommand(sublime_plugin.WindowCommand):
     """Command that toggles a setting."""
 
     def __init__(self, window):
+        """Initialize a new instance."""
         super().__init__(window)
 
     def is_visible(self, **args):
@@ -324,6 +325,7 @@ class ChooseSettingCommand(sublime_plugin.WindowCommand):
     """An abstract base class for commands that choose a setting from a list."""
 
     def __init__(self, window, setting=None, preview=False):
+        """Initialize a new instance."""
         super().__init__(window)
         self.setting = setting
         self._settings = None
@@ -635,6 +637,7 @@ class SublimelinterToggleLinterCommand(sublime_plugin.WindowCommand):
     """A command that toggles, enables, or disables linter plugins."""
 
     def __init__(self, window):
+        """Initialize a new instance."""
         super().__init__(window)
         self.linters = {}
 
@@ -646,13 +649,13 @@ class SublimelinterToggleLinterCommand(sublime_plugin.WindowCommand):
             linters = []
             settings = persist.settings.get('linters', {})
 
-            for linter in persist.linter_classes:
-                linter_settings = settings.get(linter, {})
+            for instance in persist.linter_classes:
+                linter_settings = settings.get(instance, {})
                 disabled = linter_settings.get('@disable')
 
                 if which == 'all':
                     include = True
-                    linter = [linter, 'disabled' if disabled else 'enabled']
+                    instance = [instance, 'disabled' if disabled else 'enabled']
                 else:
                     include = (
                         which == 'enabled' and not disabled or
@@ -660,7 +663,7 @@ class SublimelinterToggleLinterCommand(sublime_plugin.WindowCommand):
                     )
 
                 if include:
-                    linters.append(linter)
+                    linters.append(instance)
 
             linters.sort()
             self.linters[which] = linters
@@ -854,7 +857,7 @@ class SublimelinterCreateLinterPluginCommand(sublime_plugin.WindowCommand):
         return True
 
     def camel_case(self, name):
-        """Convert a name in the form foo-bar to FooBar."""
+        """Convert and return a name in the form foo-bar to FooBar."""
         camel_name = name[0].capitalize()
         i = 1
 
@@ -907,14 +910,12 @@ class SublimelinterPackageControlCommand(sublime_plugin.WindowCommand):
     TAG_RE = re.compile(r'(?P<major>\d+)\.(?P<minor>\d+)\.(?P<release>\d+)(?:\+\d+)?')
 
     def __init__(self, window):
+        """Initialize a new instance."""
         super().__init__(window)
         self.git = ''
 
     def is_visible(self, paths=[]):
-        """
-        Return True if any eligible plugin directories are selected.
-
-        """
+        """Return True if any eligible plugin directories are selected."""
 
         if self.git == '':
             self.git = util.which('git')
@@ -930,15 +931,12 @@ class SublimelinterPackageControlCommand(sublime_plugin.WindowCommand):
         """
         Return True if path is an eligible directory.
 
-        A directory is eligible if it is a direct child of Packages,
-        has a messages subdirectory, and has messages.json.
+        A directory is eligible if it has a messages subdirectory
+        and has messages.json.
 
         """
-        packages_path = sublime.packages_path()
-
         return (
             os.path.isdir(path) and
-            os.path.dirname(path) == packages_path and
             os.path.isdir(os.path.join(path, 'messages')) and
             os.path.isfile(os.path.join(path, 'messages.json'))
         )
@@ -968,7 +966,9 @@ class SublimelinterPackageControlCommand(sublime_plugin.WindowCommand):
 class SublimelinterNewPackageControlMessageCommand(SublimelinterPackageControlCommand):
 
     """
-    A command that creates a new entry in messages.json for the next version
+    This command automates the process of creating new Package Control release messages.
+
+    It creates a new entry in messages.json for the next version
     and creates a new file named messages/<version>.txt.
 
     """
@@ -976,6 +976,7 @@ class SublimelinterNewPackageControlMessageCommand(SublimelinterPackageControlCo
     COMMIT_MSG_RE = re.compile(r'{{{{(.+?)}}}}')
 
     def __init__(self, window):
+        """Initialize a new instance."""
         super().__init__(window)
 
     def run(self, paths=[]):
@@ -1051,6 +1052,8 @@ class SublimelinterNewPackageControlMessageCommand(SublimelinterPackageControlCo
         return message_path
 
     def sortable_tag(self, tag):
+        """Return a version tag in a sortable form."""
+
         if tag == 'install':
             return (tag, tag)
 
@@ -1086,6 +1089,17 @@ class SublimelinterNewPackageControlMessageCommand(SublimelinterPackageControlCo
         return '\n\n'.join(messages) + '\n'
 
 
+class SublimelinterClearCachesCommand(sublime_plugin.WindowCommand):
+
+    """A command that clears all of SublimeLinter's internal caches."""
+
+    def run(self):
+        """Run the command."""
+        util.clear_path_caches()
+        util.get_rc_settings.cache_clear()
+        linter.Linter.clear_settings_caches()
+
+
 class SublimelinterReportCommand(sublime_plugin.WindowCommand):
 
     """
@@ -1102,6 +1116,9 @@ class SublimelinterReportCommand(sublime_plugin.WindowCommand):
         output = self.window.new_file()
         output.set_name('{} Error Report'.format(persist.PLUGIN_NAME))
         output.set_scratch(True)
+
+        from .sublimelinter import SublimeLinter
+        self.plugin = SublimeLinter.shared_plugin()
 
         if on == 'files' or on == 'both':
             for view in self.window.views():
@@ -1126,7 +1143,7 @@ class SublimelinterReportCommand(sublime_plugin.WindowCommand):
     def report(self, output, view):
         """Write a report on the given view to output."""
 
-        def finish_lint(view, linters):
+        def finish_lint(view, linters, hit_time):
             if not linters:
                 return
 
@@ -1137,18 +1154,29 @@ class SublimelinterReportCommand(sublime_plugin.WindowCommand):
                 filename = os.path.basename(linters[0].filename or 'untitled')
                 out = '\n{}:\n'.format(filename)
 
-                for linter in linters:
-                    if linter.errors:
-                        for line, errors in sorted(linter.errors.items()):
-                            for col, error_type, error in errors:
-                                out += '  {}: {}\n'.format(line, error)
+                for lint in sorted(linters, key=lambda lint: lint.name):
+                    if lint.errors:
+                        out += '\n  {}:\n'.format(lint.name)
+                        items = sorted(lint.errors.items())
+
+                        # Get the highest line number so we know how much padding numbers need
+                        highest_line = items[-1][0]
+                        width = 1
+
+                        while highest_line >= 10:
+                            highest_line /= 10
+                            width += 1
+
+                        for line, messages in items:
+                            for col, message in messages:
+                                out += '    {:>{width}}: {}\n'.format(line, message, width=width)
 
                 output.insert(edit, output.size(), out)
 
             persist.edits[output.id()].append(insert)
             output.run_command('sublimelinter_edit')
 
-        args = (view.id(), finish_lint)
+        kwargs = {'self': self.plugin, 'view_id': view.id(), 'callback': finish_lint}
 
         from .sublimelinter import SublimeLinter
-        Thread(target=SublimeLinter.lint, args=args).start()
+        Thread(target=SublimeLinter.lint, kwargs=kwargs).start()

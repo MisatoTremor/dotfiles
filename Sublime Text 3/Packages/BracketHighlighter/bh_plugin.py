@@ -1,12 +1,12 @@
 import sublime
 import sublime_plugin
-import os
-from os.path import normpath, join, exists
+from os.path import normpath, join
 import imp
 from collections import namedtuple
 import sys
 import traceback
 import re
+from BracketHighlighter.bh_logging import log
 
 
 class Payload(object):
@@ -58,9 +58,29 @@ def is_bracket_region(obj):
 
 def sublime_format_path(pth):
     m = re.match(r"^([A-Za-z]{1}):(?:/|\\)(.*)", pth)
-    if sublime.platform() == "windows" and m != None:
+    if sublime.platform() == "windows" and m is not None:
         pth = m.group(1) + "/" + m.group(2)
     return pth.replace("\\", "/")
+
+
+def load_modules(obj, loaded):
+    """
+    Load bracket plugin modules
+    """
+
+    plib = obj.get("plugin_library")
+    if plib is None:
+        return
+
+    try:
+        module = ImportModule.import_module(plib, loaded)
+        obj["compare"] = getattr(module, "compare", None)
+        obj["post_match"] = getattr(module, "post_match", None)
+        obj["validate"] = getattr(module, "validate", None)
+        loaded.add(plib)
+    except:
+        log("Could not load module %s\n%s" % (plib, str(traceback.format_exc())))
+        raise
 
 
 class ImportModule(object):
@@ -93,7 +113,6 @@ class BracketPluginRunCommand(sublime_plugin.TextCommand):
             Payload.status = True
         except Exception:
             print("BracketHighlighter: Plugin Run Error:\n%s" % str(traceback.format_exc()))
-
 
 
 class BracketPlugin(object):

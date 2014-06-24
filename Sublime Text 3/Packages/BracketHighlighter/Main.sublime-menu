@@ -37,6 +37,7 @@
                                 "command": "bh_key",
                                 "args":
                                 {
+                                    "no_outside_adj": true,
                                     "lines" : true,
                                     "plugin":
                                     {
@@ -52,6 +53,7 @@
                                 "command": "bh_key",
                                 "args":
                                 {
+                                    "no_outside_adj": true,
                                     "lines" : true,
                                     "plugin":
                                     {
@@ -67,11 +69,28 @@
                                 "command": "bh_key",
                                 "args":
                                 {
+                                    "no_outside_adj": true,
                                     "lines" : true,
                                     "plugin":
                                     {
                                         "type": ["__all__"],
                                         "command": "bh_modules.bracketselect"
+                                    }
+                                }
+                            },
+                            // Select text including brackets
+                            {
+                                "caption": "Select Bracket Content with Brackets",
+                                "command": "bh_key",
+                                "args":
+                                {
+                                    "no_outside_adj": true,
+                                    "lines" : true,
+                                    "plugin":
+                                    {
+                                        "type": ["__all__"],
+                                        "command": "bh_modules.bracketselect",
+                                        "args": {"always_include_brackets": true}
                                     }
                                 }
                             },
@@ -165,6 +184,20 @@
                             {
                                 "caption": "Wrap Selections with Brackets",
                                 "command": "wrap_brackets"
+                            },
+                            {"caption": "-"},
+                            {
+                                "caption": "Debug Mode",
+                                "command": "bh_debug"
+                            },
+                            {
+                                "caption": "Filter Rules by Key",
+                                "command": "bh_debug_rule",
+                                "args": {"filter_key": true}
+                            },
+                            {
+                                "caption": "Show Merged Rules",
+                                "command": "bh_debug_rule"
                             }
                         ]
                     }
