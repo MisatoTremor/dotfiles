@@ -18,25 +18,7 @@ function calc() {
 
 # Create a new directory and enter it
 function mkd() {
-<<<<<<< HEAD
-    mkdir -p "$@" && cd "$@"
-}
-
-# Determine size of a file or total size of a directory
-function fs() {
-    if du -b /dev/null > /dev/null 2>&1; then
-        local arg=-sbh
-    else
-        local arg=-sh
-    fi
-    if [[ -n "$@" ]]; then
-        du $arg -- "$@"
-    else
-        du $arg .[^.]* *
-    fi
-=======
 	mkdir -p "$@" && cd "$@"
->>>>>>> 06e649ab9accbae982d013805f370c0cffd424ff
 }
 
 # Change working directory to the top-most Finder window location
@@ -96,13 +78,6 @@ fi
 
 # Create a data URL from a file
 function dataurl() {
-<<<<<<< HEAD
-    local mimeType=$(file -b --mime-type "$1")
-    if [[ $mimeType == text/* ]]; then
-        mimeType="${mimeType};charset=utf-8"
-    fi
-    echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')"
-=======
 	local mimeType=$(file -b --mime-type "$1")
 	if [[ $mimeType == text/* ]]; then
 		mimeType="${mimeType};charset=utf-8"
@@ -117,7 +92,6 @@ function gitio() {
 		return 1
 	fi
 	curl -i http://git.io/ -F "url=${2}" -F "code=${1}"
->>>>>>> 06e649ab9accbae982d013805f370c0cffd424ff
 }
 
 # Start an HTTP server from a directory, optionally specifying the port
@@ -138,20 +112,6 @@ function phpserver() {
     php -S "${ip}:${port}"
 }
 
-<<<<<<< HEAD
-# Get gzipped file size
-function gz() {
-    echo "orig size (bytes): "
-    cat "$1" | wc -c
-    echo "gzipped size (bytes): "
-    gzip -c "$1" | wc -c
-}
-
-# Test if HTTP compression (RFC 2616 + SDCH) is enabled for a given URL.
-# Send a fake UA string for sites that sniff it instead of using the Accept-Encoding header. (Looking at you, ajax.googleapis.com!)
-function httpcompression() {
-    encoding="$(curl -LIs -H 'User-Agent: Mozilla/5 Gecko' -H 'Accept-Encoding: gzip,deflate,compress,sdch' "$1" | grep '^Content-Encoding:')" && echo "$1 is encoded using ${encoding#* }" || echo "$1 is not using any encoding"
-=======
 # Start a PHP server from a directory, optionally specifying the port
 # (Requires PHP 5.4.0+.)
 function phpserver() {
@@ -168,25 +128,16 @@ function gz() {
 	local ratio=$(echo "$gzipsize * 100/ $origsize" | bc -l)
 	printf "orig: %d bytes\n" "$origsize"
 	printf "gzip: %d bytes (%2.2f%%)\n" "$gzipsize" "$ratio"
->>>>>>> 06e649ab9accbae982d013805f370c0cffd424ff
 }
 
 # Syntax-highlight JSON strings or files
 # Usage: `json '{"foo":42}'` or `echo '{"foo":42}' | json`
 function json() {
-<<<<<<< HEAD
-    if [ -t 0 ]; then # argument
-        python -mjson.tool <<< "$*" | pygmentize -l javascript
-    else # pipe
-        python -mjson.tool | pygmentize -l javascript
-    fi
-=======
 	if [ -t 0 ]; then # argument
 		python -mjson.tool <<< "$*" | pygmentize -l javascript
 	else # pipe
 		python -mjson.tool | pygmentize -l javascript
 	fi
->>>>>>> 06e649ab9accbae982d013805f370c0cffd424ff
 }
 
 # All the dig info
@@ -196,57 +147,24 @@ function digga() {
 
 # Escape UTF-8 characters into their 3-byte format
 function escape() {
-<<<<<<< HEAD
-    printf "\\\x%s" $(printf "$@" | xxd -p -c1 -u)
-    echo # newline
-=======
 	printf "\\\x%s" $(printf "$@" | xxd -p -c1 -u)
 	# print a newline unless we’re piping the output to another program
 	if [ -t 1 ]; then
 		echo # newline
 	fi
->>>>>>> 06e649ab9accbae982d013805f370c0cffd424ff
 }
 
 # Decode \x{ABCD}-style Unicode escape sequences
 function unidecode() {
-<<<<<<< HEAD
-    perl -e "binmode(STDOUT, ':utf8'); print \"$@\""
-    echo # newline
-=======
 	perl -e "binmode(STDOUT, ':utf8'); print \"$@\""
 	# print a newline unless we’re piping the output to another program
 	if [ -t 1 ]; then
 		echo # newline
 	fi
->>>>>>> 06e649ab9accbae982d013805f370c0cffd424ff
 }
 
 # Get a character’s Unicode code point
 function codepoint() {
-<<<<<<< HEAD
-    perl -e "use utf8; print sprintf('U+%04X', ord(\"$@\"))"
-    echo # newline
-}
-
-# Add note to Notes.app (OS X 10.8)
-# Usage: `note 'foo'` or `echo 'foo' | note`
-function note() {
-    local text
-    if [ -t 0 ]; then # argument
-        text="$1"
-    else # pipe
-        text=$(cat)
-    fi
-    body=$(echo "$text" | sed -E 's|$|<br>|g')
-    osascript >/dev/null <<EOF
-tell application "Notes"
-    tell account "iCloud"
-        tell folder "Notes"
-            make new note with properties {name:"$text", body:"$body"}
-        end tell
-    end tell
-=======
 	perl -e "use utf8; print sprintf('U+%04X', ord(\"$@\"))"
 	# print a newline unless we’re piping the output to another program
 	if [ -t 1 ]; then
@@ -307,7 +225,6 @@ tell application "Notes"
 			make new note with properties {name:"$title", body:"$title" & "<br><br>" & "$body"}
 		end tell
 	end tell
->>>>>>> 06e649ab9accbae982d013805f370c0cffd424ff
 end tell
 EOF
 }
@@ -315,19 +232,6 @@ EOF
 # Add reminder to Reminders.app (OS X 10.8)
 # Usage: `remind 'foo'` or `echo 'foo' | remind`
 function remind() {
-<<<<<<< HEAD
-    local text
-    if [ -t 0 ]; then
-        text="$1" # argument
-    else
-        text=$(cat) # pipe
-    fi
-    osascript >/dev/null <<EOF
-tell application "Reminders"
-    tell the default list
-        make new reminder with properties {name:"$text"}
-    end tell
-=======
 	local text
 	if [ -t 0 ]; then
 		text="$1" # argument
@@ -339,18 +243,12 @@ tell application "Reminders"
 	tell the default list
 		make new reminder with properties {name:"$text"}
 	end tell
->>>>>>> 06e649ab9accbae982d013805f370c0cffd424ff
 end tell
 EOF
 }
 
 # Manually remove a downloaded app or file from the quarantine
 function unquarantine() {
-<<<<<<< HEAD
-    for attribute in com.apple.metadata:kMDItemDownloadedDate com.apple.metadata:kMDItemWhereFroms com.apple.quarantine; do
-        xattr -r -d "$attribute" "$@"
-    done
-=======
 	for attribute in com.apple.metadata:kMDItemDownloadedDate com.apple.metadata:kMDItemWhereFroms com.apple.quarantine; do
 		xattr -r -d "$attribute" "$@"
 	done
@@ -361,5 +259,4 @@ function unquarantine() {
 function gi() {
 	local IFS=,
 	eval npm install --save-dev grunt-{"$*"}
->>>>>>> 06e649ab9accbae982d013805f370c0cffd424ff
 }
