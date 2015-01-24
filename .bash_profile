@@ -35,19 +35,5 @@ complete -W "NSGlobalDomain" defaults
 # Add `killall` tab completion for common apps
 complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall
 
-<<<<<<< HEAD
-if [ -f /usr/local/etc/bash_completion ]; then
-  . /usr/local/etc/bash_completion
-fi
-
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-
-source ~/.git-prompt.sh
-
-if [ -f ~/.ssh/id_rsa ]; then
-    ssh-add ~/.ssh/id_rsa
-fi
-=======
 # If possible, add tab completion for many more commands
 [ -f /etc/bash_completion ] && source /etc/bash_completion
->>>>>>> 06e649ab9accbae982d013805f370c0cffd424ff
