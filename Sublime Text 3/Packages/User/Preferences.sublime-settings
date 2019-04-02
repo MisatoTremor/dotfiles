@@ -1,5 +1,6 @@
 {
-	"color_scheme": "Packages/User/Tomorrow-Night (SL).tmTheme",
+	"color_scheme": "Packages/User/SublimeLinter/Darcula (SL).tmTheme",
+	"draw_white_space": "all",
 	"ignored_packages":
 	[
 		"Theme - Soda",

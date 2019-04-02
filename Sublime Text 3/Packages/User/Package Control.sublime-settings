@@ -1,11 +1,21 @@
 {
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
 	"installed_packages":
 	[
 		"BracketHighlighter",
+		"Dracula Color Scheme",
 		"EasyDiff",
+		"Emmet",
+		"Indent XML",
+		"JSCS-Formatter",
+		"nginx",
 		"Package Control",
 		"SublimeCodeIntel",
 		"SublimeLinter",
+		"Sublimerge 3",
 		"Symfony2 Snippets",
 		"Theme - Aqua",
 		"Theme - Soda"

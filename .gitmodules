@@ -1,3 +1,6 @@
 [submodule "symfony2-autocomplete"]
 	path = symfony2-autocomplete
 	url = https://github.com/KnpLabs/symfony2-autocomplete.git
+[submodule "Sublime Text 3/Packages/HighlightDuplicates"]
+	path = Sublime Text 3/Packages/HighlightDuplicates
+	url = git://github.com/Xaelias/HighlightDuplicates.git
