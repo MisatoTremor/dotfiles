@@ -56,8 +56,7 @@ fi
 
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
-source ~/dotfiles/git-prompt.sh
-source ~/dotfiles/symfony2-autocomplete/symfony2-autocomplete.bash
+eval "$(symfony-autocomplete)"
 
 if [ -f ~/.ssh/id_rsa ]; then
     ssh-add ~/.ssh/id_rsa
